@@ -1,0 +1,13 @@
+.mainContainer {
+  height: 100%;
+  width: max-content;
+  display: flex;
+  align-items: center;
+}
+
+.logImg {
+  width: 50px;
+  border-radius: 16px;
+}
+@media screen and (min-width: 320px) {
+}

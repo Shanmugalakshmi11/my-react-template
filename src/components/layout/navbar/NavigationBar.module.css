@@ -1,0 +1,25 @@
+.mainContainer {
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid grey;
+  position: fixed;
+  width: 100vw;
+  top: 0;
+}
+
+.spacer {
+  flex: 1;
+  display: none;
+}
+@media screen and (min-width: 320px) {
+  .mainContainer {
+    height: 52px;
+    flex-direction: row;
+  }
+  .spacer {
+    display: block;
+  }
+}
