@@ -11,18 +11,18 @@ function ToDoPage() {
       .then((response) => response.json())
       .then((todos) => {
         console.log(todos);
-        setTodos(todos);
+        setTodos(todos.todos);
       });
   }, []);
 
   if (todos.length === 0) {
     return <div className={styles.mainContainer}></div>;
   }
-
+  console.log(todos.todos);
   return (
     <div className={styles.mainContainer}>
       {todos.map((todo) => (
-        <ToDoItem key={todo.id} todo={todo} />
+        <ToDoItem todo={todo} />
       ))}
     </div>
   );
