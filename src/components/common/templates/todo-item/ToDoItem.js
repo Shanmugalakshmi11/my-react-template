@@ -1,4 +1,3 @@
-import Checkbox from "../../buttons/checkbox";
 import styles from "./ToDoItem.module.css";
 
 function ToDoItem({ todo }) {

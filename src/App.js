@@ -7,6 +7,7 @@ import ImpressumPage from "./pages/impressum-page";
 import Content from "./components/layout/content";
 import AboutMePage from "./pages/aboutme-page";
 import Footer from "./components/layout/footer";
+import ToDoPage from "./pages/todo-page/ToDoPage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/impressum" element={<ImpressumPage />} />
           <Route path="/aboutme" element={<AboutMePage />} />
+          <Route path="/todo" element={<ToDoPage />} />
         </Routes>
       </Content>
       <Footer />
