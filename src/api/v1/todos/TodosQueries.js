@@ -4,7 +4,8 @@ async function fetchAllTodos() {
   const result = await api.get("/todos/all");
 
   const todos = result.data.todos;
-
+  console.log(todos);
+  console.log(typeof todos);
   return todos;
 }
 

@@ -34,9 +34,9 @@ async function updateTodo(todoId, updatedTodoData) {
 }
 
 // DELETE /delete
-async function deleteTodo(todoId) {
+async function deleteTodo(todosId) {
   try {
-    const result = await api.delete("/todos/delete", { params: { todoId } });
+    const result = await api.delete("/todos/delete", { params: { todosId } });
     const deletedTodo = result.data.todos;
     return deletedTodo;
   } catch (error) {

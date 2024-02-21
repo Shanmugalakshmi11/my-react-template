@@ -5,22 +5,34 @@ import { TodosMutations } from "../../../../api/v1/todos";
 import StandardBtn from "../../buttons/standard-btn/StandardBtn";
 
 function ToDoItem({ todos }) {
-  console.log("TODO", todos);
-  const [isDone, setIsDone] = useState(todos.isDone);
+  console.log("TodoItem", todos);
+  const [completed, setIsDone] = useState(todos.completed);
   const [isDeleted, setIsDeleted] = useState(false);
 
   async function onClickDone() {
-    const newTodo = await TodosMutations.markTodo(todos.id, !isDone);
-    setIsDone(!isDone);
+    // Use the callback form of setState to ensure working with the latest state
+    setIsDone((prevCompleted) => !prevCompleted);
+
+    // You might want to use the updated state value in your API call
+    const newTodo = await TodosMutations.markTodo(todos.id, !completed);
+
     console.log("NEW TODO", newTodo);
   }
 
   async function onClickDelete() {
-    setIsDeleted(true);
-    console.log("MY TDO", todos);
-    await TodosMutations.deleteTodo(todos.id);
+    try {
+      // Make the DELETE request to the backend
+      await TodosMutations.deleteTodo(todos.id);
+
+      // Update the state to mark as deleted
+      setIsDeleted(true);
+    } catch (error) {
+      console.error("Error deleting todo:", error);
+    }
   }
+
   if (isDeleted) return null;
+
   return (
     <div className={styles.mainContainer}>
       <h1>ToDo-Item</h1>
@@ -30,7 +42,7 @@ function ToDoItem({ todos }) {
       <p>completed: {todos.completed ? "True" : "False"}</p>
       <p>DueDate: {todos.Date}</p>
       <label>
-        Geschafft: <input type="checkbox" checked={todos.completed}></input>
+        Geschafft: <Checkbox isChecked={completed} onClick={onClickDone} />
       </label>
 
       <StandardBtn text={"DELETE"} onClick={onClickDelete} />
