@@ -5,43 +5,41 @@ async function createTodo(newTodo) {
     newTodo: newTodo,
   });
 
-  const todos = result.data.todos;
+  const todos = result.data;
 
   return todos;
 }
-// PUT /mark
-async function markTodo(todoId) {
-  try {
-    const result = await api.put("/todos/mark", { todoId });
-    const markedTodo = result.data.todos;
-    return markedTodo;
-  } catch (error) {
-    console.error("Error marking todo:", error.message);
-    throw error;
-  }
+
+async function markTodo(todoId, completed) {
+  const result = await api.put("/todos/mark", {
+    id: todoId,
+    completed: completed,
+  });
+
+  const todo = result.data.updatedTodo;
+
+  return todo;
 }
 
-// PUT /update
-async function updateTodo(todoId, updatedTodoData) {
-  try {
-    const result = await api.put("/todos/update", { todoId, updatedTodoData });
-    const updatedTodo = result.data.todos;
-    return updatedTodo;
-  } catch (error) {
-    console.error("Error updating todo:", error.message);
-    throw error;
-  }
-}
-
-// DELETE /delete
 async function deleteTodo(todosId) {
-  try {
-    const result = await api.delete("/todos/delete", { params: { todosId } });
-    const deletedTodo = result.data.todos;
-    return deletedTodo;
-  } catch (error) {
-    console.error("Error deleting todo:", error.message);
-    throw error;
-  }
+  const result = await api.delete("/todos/delete", {
+    data: { todosId },
+  });
+
+  const deletedTodoId = result.data.deletedTodoId;
+
+  return deletedTodoId;
 }
-export default { createTodo, markTodo, updateTodo, deleteTodo };
+
+async function updateTodo(updateId, updateTask, updateCompleted, updateDate) {
+  const result = await api.put("todos/update", {
+    todosId: updateId,
+    task: updateTask,
+    completed: updateCompleted,
+    DueDate: updateDate,
+  });
+  const todos = result.data.updatedTodo;
+  return todos;
+}
+
+export default { createTodo, markTodo, deleteTodo, updateTodo };

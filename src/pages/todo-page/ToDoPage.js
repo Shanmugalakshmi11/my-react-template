@@ -57,10 +57,9 @@ function ToDoPage() {
   console.log(todos);
   return (
     <div className={styles.mainContainer}>
-      <ToDoItem todos={todos[0]}></ToDoItem>
-      <ToDoItem todos={todos[1]}></ToDoItem>
-      <ToDoItem todos={todos[2]}></ToDoItem>
-      <ToDoItem todos={todos[3]}></ToDoItem>
+      {todos.map((item) => (
+        <ToDoItem key={item.id} todos={item} />
+      ))}
     </div>
   );
 }

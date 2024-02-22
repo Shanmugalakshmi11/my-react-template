@@ -5,29 +5,42 @@ import { TodosMutations } from "../../../../api/v1/todos";
 import StandardBtn from "../../buttons/standard-btn/StandardBtn";
 
 function ToDoItem({ todos }) {
-  console.log("TodoItem", todos);
   const [completed, setIsDone] = useState(todos.completed);
+  const [task, setTask] = useState(todos.task);
+  const [date, setDate] = useState(todos.DueDate);
   const [isDeleted, setIsDeleted] = useState(false);
 
   async function onClickDone() {
-    // Use the callback form of setState to ensure working with the latest state
-    setIsDone((prevCompleted) => !prevCompleted);
-
-    // You might want to use the updated state value in your API call
-    const newTodo = await TodosMutations.markTodo(todos.id, !completed);
-
-    console.log("NEW TODO", newTodo);
+    try {
+      const newTodo = await TodosMutations.markTodo(todos.id, !completed);
+      setIsDone(!completed);
+      console.log("NEW TODO", newTodo);
+    } catch (error) {
+      console.error("Error marking todo:", error);
+    }
   }
 
   async function onClickDelete() {
     try {
-      // Make the DELETE request to the backend
-      await TodosMutations.deleteTodo(todos.id);
-
-      // Update the state to mark as deleted
       setIsDeleted(true);
+      console.log("My TODO", todos);
+      await TodosMutations.deleteTodo(todos.id);
     } catch (error) {
       console.error("Error deleting todo:", error);
+    }
+  }
+
+  async function onClickSendUpdate() {
+    try {
+      const response = await TodosMutations.updateTodo(
+        todos.id,
+        task,
+        completed,
+        date
+      );
+      console.log(response);
+    } catch (error) {
+      console.error("Error updating todo:", error);
     }
   }
 
@@ -40,11 +53,33 @@ function ToDoItem({ todos }) {
       <p>TodoId: {todos.id}</p>
       <p>Aufgabe: {todos.task}</p>
       <p>completed: {todos.completed ? "True" : "False"}</p>
-      <p>DueDate: {todos.Date}</p>
+      <p>DueDate: {todos.DueDate}</p>
+
       <label>
         Geschafft: <Checkbox isChecked={completed} onClick={onClickDone} />
       </label>
 
+      <div className={styles.updateContainer}>
+        <h1> UPDATE </h1>
+        <div className={styles.horizontalLine}></div>
+        <input
+          type="text"
+          value={task}
+          onChange={(event) => setTask(event.target.value)}
+        ></input>
+        <input
+          type="text"
+          value={date}
+          onChange={(event) => setDate(event.target.value)}
+        ></input>
+        <br></br>
+        <label>
+          {" "}
+          Geschafft: <Checkbox isChecked={completed} onClick={onClickDone} />
+          <StandardBtn text={"SEND"} onClick={onClickSendUpdate} />
+        </label>
+      </div>
+      <br></br>
       <StandardBtn text={"DELETE"} onClick={onClickDelete} />
     </div>
   );
