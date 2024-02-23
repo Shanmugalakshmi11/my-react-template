@@ -1,4 +1,6 @@
-import { TodosQueries } from "../../api/v1/todos";
+import { TodosMutations, TodosQueries } from "../../api/v1/todos";
+import StandardBtn from "../../components/common/buttons/standard-btn";
+import Checkbox from "../../components/common/buttons/checkbox";
 import ToDoItem from "../../components/common/templates/todo-item";
 import styles from "./ToDoPage.module.css";
 import { useState, useEffect } from "react";
@@ -9,7 +11,11 @@ function ToDoPage() {
   //neurendern der Komponente triggern
   //Antwort ist da? => lad die Komponente einmal mit Daten gefüllt neu
   const [todos, setTodos] = useState([]);
-  console.log(todos);
+  const [newId, setNewId] = useState("");
+  const [newTask, setNewTask] = useState("");
+  const [newDueDate, setNewDueDate] = useState("");
+  const [newcompleted, setNewCompleted] = useState(false);
+
   async function fetchTodos() {
     try {
       console.log("Hello world 1 von fetchTodos");
@@ -21,6 +27,11 @@ function ToDoPage() {
     } catch (e) {
       console.log("Hello world", e);
     }
+  }
+
+  async function onClickAdd() {
+    console.log("Ich poste jetzt!");
+    await TodosMutations.createTodo(newId, newTask, newcompleted, newDueDate);
   }
 
   // Alternative Funktion für den API Aufruf
@@ -57,9 +68,37 @@ function ToDoPage() {
   console.log(todos);
   return (
     <div className={styles.mainContainer}>
-      {todos.map((item) => (
-        <ToDoItem key={item.id} todos={item} />
-      ))}
+      <div>
+        <input
+          type="text"
+          value={newId}
+          placeholder="id..."
+          onChange={(event) => setNewId(event.target.value)}
+        ></input>
+        <input
+          type="text"
+          value={newTask}
+          placeholder="aufgabe..."
+          onChange={(event) => setNewTask(event.target.value)}
+        ></input>
+        <input
+          type="text"
+          value={newDueDate}
+          placeholder="datum..."
+          onChange={(event) => setNewDueDate(event.target.value)}
+        ></input>
+        <Checkbox
+          isChecked={newcompleted}
+          onClick={() => setNewCompleted(!newcompleted)}
+        ></Checkbox>
+        <StandardBtn text={"ADD"} onClick={onClickAdd} />
+      </div>
+
+      <div>
+        {todos.map((item) => (
+          <ToDoItem key={item.id} todo={item} />
+        ))}
+      </div>
     </div>
   );
 }
