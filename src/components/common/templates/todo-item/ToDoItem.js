@@ -5,15 +5,15 @@ import { TodosMutations } from "../../../../api/v1/todos";
 import StandardBtn from "../../buttons/standard-btn/StandardBtn";
 
 function ToDoItem({ todo }) {
-  const [isDone, setIsDone] = useState(todo.isDone);
+  const [completed, setIsDone] = useState(todo.completed);
   const [task, setTask] = useState(todo.task);
   const [date, setDueDate] = useState(todo.DueDate);
   const [isDeleted, setIsDeleted] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
 
   async function onClickDone() {
-    await TodosMutations.markTodo(todo.id, !isDone);
-    setIsDone(!isDone);
+    await TodosMutations.markTodo(todo.id, !completed);
+    setIsDone(!completed);
   }
 
   async function onClickDelete() {
@@ -22,7 +22,7 @@ function ToDoItem({ todo }) {
   }
 
   async function onClickSendUpdate() {
-    await TodosMutations.updateTodo(todo.id, task, isDone, date);
+    await TodosMutations.updateTodo(todo.id, task, completed, date);
     setIsEditMode(false);
   }
 
@@ -49,8 +49,8 @@ function ToDoItem({ todo }) {
           onChange={(event) => setDueDate(event.target.value)}
         ></input>
         <Checkbox
-          isChecked={isDone}
-          onClick={() => setIsDone(!isDone)}
+          isChecked={completed}
+          onClick={() => setIsDone(!completed)}
         ></Checkbox>
         <StandardBtn text={"SEND"} onClick={onClickSendUpdate} />
       </div>
@@ -64,7 +64,7 @@ function ToDoItem({ todo }) {
         <p>Aufgabe: {task}</p>
         <p>DueDate: {date}</p>
         <label>
-          Geschafft: <Checkbox isChecked={isDone} onClick={onClickDone} />
+          Geschafft: <Checkbox isChecked={completed} onClick={onClickDone} />
         </label>
         <StandardBtn text={"DELETE"} onClick={onClickDelete} /> <br></br>
         <StandardBtn text={"EDIT"} onClick={onClickEdit} />

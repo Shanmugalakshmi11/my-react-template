@@ -1,7 +1,7 @@
 import api from "../../config/api";
 
 async function createTodo(id, task, completed, date) {
-  const result = api.post("/todos/create", {
+  const result = await api.post("/todos/create", {
     newId: id,
     newTask: task,
     newIsDone: completed,
